@@ -1,0 +1,179 @@
+*, *::after, *::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --cell-size: 100px;
+    --mark-size: calc( var(--cell-size) * .9 );
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title-container{
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1{
+    text-align: center;
+}
+
+.turno-container{
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board{
+    width: 100vw;
+    height: 80vh;
+    display: grid;
+    justify-content: center; /* Centrar el contenido en horizontal */
+    align-content: center; /* Centrar el contenido en vertical */
+    /*justify-items: center;*/ /* Centrar el contenido de las celdas en horizontal */
+    /*align-items: center;*/ /* Centrar el contenido de las celdas en vertical */
+    grid-template-columns: repeat(3, auto); /* 3 columnas de tamaño auto */
+}
+
+.cell{
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+    position: relative;
+    cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3){
+    border-top: none;
+}
+
+.cell:nth-child(3n+1){
+    border-left: none;
+}
+
+.cell:nth-child(3n + 3){
+    border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9){
+    border-bottom: none;
+}
+
+.cell.x,
+.cell.circle{
+    cursor: not-allowed;
+}
+
+.cell::before,
+.cell::after{
+    background-color: black;
+}
+
+/* Cuando el tablero tenga la clase "x" y las celdas no tengan ni la clase "x"
+ni la clase "circle", y solo cuando estemos con el ratón encima, entonces estilizamos
+el ::before y el ::after y le damos color gris */
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+    background-color: lightgray;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc( var(--mark-size) * .15 );
+    height: calc( var(--mark-size));
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before{
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after{
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cell.circle::before{
+    background-color: black;
+    width: var(--mark-size);
+    height: var(--mark-size);
+}
+
+.board.circle .cell:not(.x):not(.circle):hover::before{
+    background-color: lightgray;
+    width: var(--mark-size);
+    height: var(--mark-size);
+}
+
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after{
+    background-color: white;
+    width: calc( var(--mark-size) * .7 );
+    height: calc( var(--mark-size) * .7 );
+}
+
+.winning-message{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .9);
+    color: white;
+    font-size: 5rem;
+}
+
+.winning-message.show{
+    display: flex;
+}
+
+.winning-message button{
+    font-size: 3rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.winning-message button:hover{
+    background-color: black;
+    color: white;
+    border-color: white;
+}
